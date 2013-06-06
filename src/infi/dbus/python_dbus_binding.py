@@ -32,7 +32,7 @@ def _dbus_bindings_c_api_address():
 # 2. mainloop = DBusPyNativeMainLoop_New4(conn_setup_func, serv_setup_func, free_func, data)
 c_api_address = _dbus_bindings_c_api_address()
 array_len_ptr = deref_mem_addr(c_api_address + PTR_SIZE * 0)
-array_len = deref_mem_addr(array_len_ptr)
+array_len = deref_mem_addr(array_len_ptr) & 0xFFFFFFFF  # int size is 4 bytes, and not always 8 bytes are cleared
 if array_len < 3 or array_len > 10:  # 10 is just a safety
     raise Exception("_dbus_bindings._C_API isn't what we expect - are you using an incompatible package?")
 
